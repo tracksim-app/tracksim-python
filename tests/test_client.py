@@ -54,6 +54,8 @@ DRIVER_DATA = {
     "last_active": "2026-11-13T02:19:58.153Z",
 }
 
+ADD_DRIVER_DATA = {key: value for key, value in DRIVER_DATA.items() if key != "settings"}
+
 MAP_ROUTE_DATA = {
     "id": ROUTE_ID,
     "game": "eut2",
@@ -113,12 +115,57 @@ class TrackSimTests(unittest.TestCase):
 
     # --- Drivers ---
 
-    def test_add_driver(self) -> None:
-        self.reply(DRIVER_DATA)
+    def test_add_driver_client_installed(self) -> None:
+        self.reply(ADD_DRIVER_DATA)
         driver = self.client.add_driver(int(STEAM_ID))
 
-        self.assertEqual(driver.to_dict(), DRIVER_DATA)
+        self.assertEqual(driver.id, 7489)
+        self.assertEqual(driver.steam_id, STEAM_ID)
+        self.assertIsInstance(driver.steam_id, str)
+        self.assertEqual(driver.username, "Nathan7471")
+        self.assertEqual(driver.profile_photo_url, "https://example.com/avatar.jpg")
+        self.assertIs(driver.client.is_installed, True)
+        self.assertEqual(driver.client.version.version, "2.2.1")
+        self.assertEqual(driver.client.version.branch, "production")
+        self.assertEqual(driver.client.version.platform, "windows")
+        self.assertIs(driver.is_banned, False)
+        self.assertEqual(driver.last_active, "2026-11-13T02:19:58.153Z")
+        self.assertIsNone(driver.settings)
+        self.assertEqual(driver.to_dict(), {**ADD_DRIVER_DATA, "settings": None})
         self.assert_called("POST", "/v1/drivers/add", json={"steam_id": STEAM_ID})
+
+    def test_add_driver_client_not_installed(self) -> None:
+        data = {
+            **ADD_DRIVER_DATA,
+            "client": {
+                "is_installed": False,
+                "version": {"version": None, "branch": None, "platform": None},
+            },
+            "last_active": None,
+        }
+        self.reply(data)
+        driver = self.client.add_driver(STEAM_ID)
+
+        self.assertIs(driver.client.is_installed, False)
+        self.assertIsNone(driver.client.version.version)
+        self.assertIsNone(driver.client.version.branch)
+        self.assertIsNone(driver.client.version.platform)
+        self.assertIsNone(driver.last_active)
+        self.assertIsNone(driver.settings)
+        self.assertEqual(driver.to_dict(), {**data, "settings": None})
+
+    def test_add_driver_errors(self) -> None:
+        for code in (
+            "steam_profile_private",
+            "resource_already_exists",
+            "driver_no_compatible_games",
+            "max_driver_limit_reached",
+        ):
+            with self.subTest(code=code):
+                self.reply({"error": code}, status=400)
+                with self.assertRaises(APIError) as caught:
+                    self.client.add_driver(STEAM_ID)
+                self.assertEqual(caught.exception.message, code)
 
     def test_remove_driver(self) -> None:
         self.reply(None)

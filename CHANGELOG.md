@@ -4,6 +4,13 @@ All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the project uses
 [Semantic Versioning](https://semver.org/).
 
+## [1.0.1] - 2026-11-25
+
+### Fixed
+
+- `add_driver` no longer fails to parse: `Driver.settings` is `None` when the response
+  omits it, and `DriverClientVersion` fields are `None` when the client is not installed.
+
 ## [1.0.0] - 2026-11-25
 
 ### Added
@@ -37,5 +44,6 @@ All notable changes to this project are documented here. The format follows
 
 - Company details, adding, removing and managing drivers, driver details and job routes.
 
+[1.0.1]: https://github.com/tracksim-app/tracksim-python/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/tracksim-app/tracksim-python/compare/v0.2.0...v1.0.0
 [0.2.0]: https://github.com/tracksim-app/tracksim-python/releases/tag/v0.2.0

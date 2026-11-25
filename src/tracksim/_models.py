@@ -119,15 +119,19 @@ class Company(_Model):
 
 @dataclass(frozen=True, slots=True)
 class DriverClientVersion(_Model):
-    """Installed TrackSim client version details."""
+    """Installed TrackSim client version details. All fields are None when not installed."""
 
-    version: str
-    branch: str
-    platform: str
+    version: str | None
+    branch: str | None
+    platform: str | None
 
     @classmethod
     def _from_api(cls, data: Mapping[str, Any]) -> DriverClientVersion:
-        return cls(_string(data, "version"), _string(data, "branch"), _string(data, "platform"))
+        return cls(
+            _string(data, "version", nullable=True),
+            _string(data, "branch", nullable=True),
+            _string(data, "platform", nullable=True),
+        )
 
 
 @dataclass(frozen=True, slots=True)
@@ -212,19 +216,20 @@ class Driver(_Model):
     username: str
     profile_photo_url: str
     client: DriverClient
-    settings: DriverSettings
+    settings: DriverSettings | None  # None for add_driver, which omits settings.
     is_banned: bool
     last_active: str | None
 
     @classmethod
     def _from_api(cls, data: Mapping[str, Any]) -> Driver:
+        settings = _mapping(data, "settings", nullable=True)
         return cls(
             id=_integer(data, "id"),
             steam_id=_string(data, "steam_id"),
             username=_string(data, "username"),
             profile_photo_url=_string(data, "profile_photo_url"),
             client=DriverClient._from_api(_mapping(data, "client")),
-            settings=DriverSettings._from_api(_mapping(data, "settings")),
+            settings=DriverSettings._from_api(settings) if settings is not None else None,
             is_banned=_boolean(data, "is_banned"),
             last_active=_string(data, "last_active", nullable=True),
         )
