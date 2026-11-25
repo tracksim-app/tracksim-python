@@ -1,3 +1,9 @@
+<p align="center">
+  <a href="https://tracksim.app">
+    <img src="https://tracksim-prod.s3.eu-west-2.amazonaws.com/public/logos/TrackSim-logo-full-color.png" alt="TrackSim" width="320">
+  </a>
+</p>
+
 # TrackSim Python
 
 [![PyPI](https://img.shields.io/pypi/v/TrackSim.svg)](https://pypi.org/project/TrackSim/)
