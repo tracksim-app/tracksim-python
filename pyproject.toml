@@ -1,0 +1,63 @@
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "TrackSim"
+dynamic = ["version"]
+description = "Official Python client for the TrackSim API"
+readme = "README.md"
+license = { file = "LICENSE" }
+requires-python = ">=3.10"
+authors = [{ name = "Omnibyte Technologies Limited" }]
+keywords = ["tracksim", "ets2", "ats", "euro truck simulator", "american truck simulator", "vtc", "api"]
+dependencies = ["requests>=2.31,<3"]
+classifiers = [
+  "Development Status :: 5 - Production/Stable",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
+  "Topic :: Games/Entertainment :: Simulation",
+  "Typing :: Typed",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8", "mypy>=1.10", "ruff>=0.6", "types-requests"]
+
+[project.urls]
+Homepage = "https://tracksim.app"
+Documentation = "https://docs.tracksim.app"
+Changelog = "https://github.com/tracksim-app/tracksim-python/blob/main/CHANGELOG.md"
+Source = "https://github.com/tracksim-app/tracksim-python"
+Issues = "https://github.com/tracksim-app/tracksim-python/issues"
+
+[tool.setuptools.dynamic]
+version = { attr = "tracksim._version.__version__" }
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+tracksim = ["py.typed"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+
+[tool.mypy]
+strict = true
+files = ["src"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
