@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools>=69"]
+requires = ["setuptools>=77"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -7,7 +7,8 @@ name = "TrackSim"
 dynamic = ["version"]
 description = "Official Python client for the TrackSim API"
 readme = "README.md"
-license = { file = "LICENSE" }
+license = "MIT"
+license-files = ["LICENSE"]
 requires-python = ">=3.10"
 authors = [{ name = "Omnibyte Technologies Limited" }]
 keywords = ["tracksim", "ets2", "ats", "euro truck simulator", "american truck simulator", "vtc", "api"]
@@ -15,7 +16,6 @@ dependencies = ["requests>=2.31,<3"]
 classifiers = [
   "Development Status :: 5 - Production/Stable",
   "Intended Audience :: Developers",
-  "License :: OSI Approved :: MIT License",
   "Operating System :: OS Independent",
   "Programming Language :: Python :: 3",
   "Programming Language :: Python :: 3 :: Only",
@@ -29,7 +29,7 @@ classifiers = [
 ]
 
 [project.optional-dependencies]
-dev = ["pytest>=8", "mypy>=1.10", "ruff>=0.6", "types-requests"]
+dev = ["pytest>=8", "mypy>=1.10", "ruff==0.17.6", "types-requests"]
 
 [project.urls]
 Homepage = "https://tracksim.app"

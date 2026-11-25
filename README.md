@@ -54,10 +54,10 @@ print(driver.settings.ats.car.job_logging)
 # Only the settings you pass are changed.
 driver = tracksim.manage_driver(
     "76561198171686422",
-    eut2_job_logging=True,         # ETS2 trucks
+    eut2_job_logging=True,  # ETS2 trucks
     eut2_live_tracking=True,
-    eut2_coach_job_logging=True,   # ETS2 coaches
-    ats_car_live_tracking=False,   # ATS cars
+    eut2_coach_job_logging=True,  # ETS2 coaches
+    ats_car_live_tracking=False,  # ATS cars
 )
 
 tracksim.remove_driver("76561198171686422")
@@ -85,7 +85,7 @@ often.
 Requires a TrackSim map and the Route Planner add-on. Limited to 60 requests a minute.
 
 ```python
-link = tracksim.create_map_link()               # plan a new route
+link = tracksim.create_map_link()  # plan a new route
 link = tracksim.create_map_edit_link(route_id)  # edit an existing one
 print(link.full_url)  # one-time link, expires after 24 hours: treat it as a secret
 
@@ -108,6 +108,7 @@ from flask import Flask, abort, request
 from tracksim import verify_webhook_signature
 
 app = Flask(__name__)
+
 
 @app.post("/tracksim")
 def tracksim_webhook():
@@ -153,8 +154,8 @@ except APIError as error:
 ```python
 TrackSim(
     api_key="...",
-    timeout=30.0,          # seconds per request
-    session=my_session,    # reuse your own requests.Session (proxies, retries, ...)
+    timeout=30.0,  # seconds per request
+    session=my_session,  # reuse your own requests.Session (proxies, retries, ...)
 )
 ```
 
